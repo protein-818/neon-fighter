@@ -1058,4 +1058,5 @@ let LT=0,AC2=0;function loop(t){t=t||0;bgmTick();AC2+=Math.min(50,t-LT)*(mode=='
 ['touchstart','touchend','pointerdown','pointerup','mousedown','click','keydown'].forEach(t=>addEventListener(t,unlockAudio,{passive:true,capture:true}));document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AC&&AC.state!='running')AC.resume().catch(()=>{})});
 A=mk(200,false,0);B=mk(480,true,1);loop();
 </script>
-<script src="site.js"></script></body></html>
+<script src="site.js"></script>
+<script src="gamepad.js"></script></body></html>

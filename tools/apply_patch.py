@@ -5,7 +5,7 @@
 
 ゲームの挙動は変えず、公開に必要な差分だけを入れる:
   1. <head> に説明文・共有用メタ情報・アイコン
-  2. analytics.js / site.js の読み込み
+  2. analytics.js / site.js / gamepad.js の読み込み
   3. 対戦開始・決着・トレーニング開始の計測呼び出し
 目印の文字列が見つからない（ゲーム側が変わった）場合はエラーで止まる。
 """
@@ -36,7 +36,7 @@ EDITS = [
     ("r:[{h:A.hp,t:0},{h:B.hp,t:0}]};mode='play'}",
      "r:[{h:A.hp,t:0},{h:B.hp,t:0}]};mode='play';"
      "try{window.NFA&&NFA.trainingStart({character:CH[ch].n})}catch(e){}}"),
-    ('</script></body></html>', '</script>\n<script src="site.js"></script></body></html>'),
+    ('</script></body></html>', '</script>\n<script src="site.js"></script>\n<script src="gamepad.js"></script></body></html>'),
 ]
 
 def main():

@@ -25,6 +25,7 @@
     matchEnd:function(p){
       var o={};if(cur){for(var k in cur.p)o[k]=cur.p[k];o.duration_sec=Math.round((Date.now()-cur.t)/1000)}
       for(var j in p)o[j]=p[j];cur=null;send('match_end',o)},
-    trainingStart:function(p){cur=null;send('training_start',p)}
+    trainingStart:function(p){cur=null;send('training_start',p)},
+    track:function(name,p){send(name,p)}
   };
 })();
