@@ -6,7 +6,9 @@
 ゲームの挙動は変えず、公開に必要な差分だけを入れる:
   1. <head> に説明文・共有用メタ情報・アイコン
   2. analytics.js / site.js / gamepad.js の読み込み
-  3. 対戦開始・決着・トレーニング開始の計測呼び出し
+計測の呼び出し（NFA.matchStart / matchEnd / trainingStart）は、ゲーム本体に
+最初から入っている（プロジェクト文書 23）。ここでは差し込まず、1回ずつ入っている
+ことだけを確かめる。二重に入ると計測が2回飛ぶため。
 目印の文字列が見つからない（ゲーム側が変わった）場合はエラーで止まる。
 """
 import sys
@@ -27,15 +29,6 @@ EDITS = [
     ('<title>NEON FIGHTER</title>', HEAD),
     ("<script>\nconst cv=document.getElementById('c')",
      "<script src=\"analytics.js\"></script>\n<script>\nconst cv=document.getElementById('c')"),
-    ("try{localStorage.setItem('nf2_lv',lv);localStorage.setItem('nf2_ch',ch)}catch(e){}}",
-     "try{localStorage.setItem('nf2_lv',lv);localStorage.setItem('nf2_ch',ch)}catch(e){}"
-     "try{window.NFA&&NFA.matchStart({character:CH[ch].n,opponent:CH[oi].n,level:lv,spectate:SPECT?1:0,rematch:re?1:0})}catch(e){}}"),
-    ("if(koFinal){win=d===A?'LOSE':'WIN';recEnd()}",
-     "if(koFinal){win=d===A?'LOSE':'WIN';recEnd();"
-     "try{window.NFA&&NFA.matchEnd({result:koTm?'TIMEUP_'+win:win,rounds:A.rw+B.rw})}catch(e){}}"),
-    ("r:[{h:A.hp,t:0},{h:B.hp,t:0}]};mode='play'}",
-     "r:[{h:A.hp,t:0},{h:B.hp,t:0}]};mode='play';"
-     "try{window.NFA&&NFA.trainingStart({character:CH[ch].n})}catch(e){}}"),
     ('</script></body></html>', '</script>\n<script src="site.js"></script>\n<script src="gamepad.js"></script></body></html>'),
 ]
 
@@ -49,6 +42,10 @@ def main():
         sys.exit('ゲーム本体の開始位置が見つかりません')
     j = raw.find('</html>', i) + len('</html>')
     s = raw[i:j] + '\n'
+    for call in ('NFA.matchStart(', 'NFA.matchEnd(', 'NFA.trainingStart('):
+        n = s.count(call)
+        if n != 1:
+            sys.exit(f'計測の呼び出し {call} が {n} 個あります（本体に1個だけ入っているはず）')
     for old, new in EDITS:
         n = s.count(old)
         if n != 1:
