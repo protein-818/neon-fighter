@@ -4,7 +4,7 @@
  * GA_ID が空のあいだは何も外部に送信しない（ゲームは普通に動く）。
  */
 (function(){
-  var GA_ID='';            // ← GA4の測定ID（G-XXXXXXXXXX）をここに入れると計測が始まる
+  var GA_ID='G-5TL4CWMFT1'; // GA4の測定ID。空にすると計測が止まる
   var DEBUG=/[?&]nfa_debug=1/.test(location.search);
   var on=!!GA_ID&&navigator.doNotTrack!=='1';
   window.dataLayer=window.dataLayer||[];
