@@ -2,10 +2,14 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NEON FIGHTER</title>
-<meta name="description" content="インストール不要。ブラウザで今すぐ遊べるネオン格闘ゲーム。">
+<meta name="description" content="インストール不要。ブラウザで今すぐ遊べる2D格闘ゲーム。部位破壊・構え切替・10人のキャラクター。">
 <meta property="og:title" content="NEON FIGHTER">
-<meta property="og:description" content="インストール不要。ブラウザで今すぐ遊べるネオン格闘ゲーム。">
+<meta property="og:description" content="インストール不要。ブラウザで今すぐ遊べる2D格闘ゲーム。部位破壊・構え切替・10人のキャラクター。">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://protein-818.github.io/neon-fighter/">
+<meta property="og:image" content="https://protein-818.github.io/neon-fighter/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0b0c10}
@@ -1053,4 +1057,5 @@ uiSync=()=>{const on=(mode=='play'||mode=='ko'||mode=='intro')&&!paused&&!SPECT;
 let LT=0,AC2=0;function loop(t){t=t||0;bgmTick();AC2+=Math.min(50,t-LT)*(mode=='ko'?(kt>24?.35:.6):1);LT=t;while(AC2>=16.67){if(!paused&&(mode=='play'||mode=='ko'||mode=='intro'))update();else if(mode=='title'||mode=='menu')selTick();AC2-=16.67}TT=t/16.67;IA=(paused||!(mode=='play'||mode=='ko'||mode=='intro'))?1:Math.min(1,AC2/16.67);draw();requestAnimationFrame(loop)}
 ['touchstart','touchend','pointerdown','pointerup','mousedown','click','keydown'].forEach(t=>addEventListener(t,unlockAudio,{passive:true,capture:true}));document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AC&&AC.state!='running')AC.resume().catch(()=>{})});
 A=mk(200,false,0);B=mk(480,true,1);loop();
-</script></body></html>
+</script>
+<script src="site.js"></script></body></html>

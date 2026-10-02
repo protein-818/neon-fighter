@@ -9,6 +9,9 @@
 | `index.html` | ゲーム本体 |
 | `analytics.js` | 計測（プレイ人数・プレイ時間・再訪・キャラ使用率） |
 | `privacy.html` | 利用データの取り扱いの説明ページ |
+| `site.js` | タイトル画面に出すリンク（利用データの説明、感想フォーム） |
+| `og.png` / `favicon.svg` | SNS共有時の画像とアイコン |
+| `tools/apply_patch.py` | Claude上の最新版を公開用 `index.html` に変換するスクリプト |
 
 ## 手元で動かす
 
@@ -31,3 +34,17 @@ GitHub Pages で `main` ブランチの直下をそのまま公開します。`m
 | `training_start` | 使用キャラ |
 
 URLの末尾に `?nfa_debug=1` を付けると、送信内容がブラウザのコンソールに表示されます。
+
+## ゲームを更新する
+
+Claude上で更新したゲームのHTMLを取り出し、次を実行してから `main` に反映します。
+
+```
+python3 tools/apply_patch.py <取り出したHTML>
+```
+
+`index.html` は直接編集しません（次の更新で上書きされるため）。
+
+## 感想フォームを付ける
+
+`site.js` の `FEEDBACK_URL` にフォームのURLを入れると、タイトル画面に「感想を送る」が表示されます。
