@@ -6,12 +6,14 @@
  * 配置（Xbox配列での名前 / 位置）:
  *   十字キー・左スティック = 移動      X(左)=弱  Y(上)=強  A(下)=投げ  B(右)=ガード
  *   LB / RB / LT / RT = 必殺技 1〜4     START = ポーズ     BACK = トレーニングで中央に戻す
+ * 溜められる技（Version 60 以降。強と必殺技1）は、ボタンを押し続けると溜まり、離すと出る。
  * メニュー: 十字キーで選択、A=決定、B=戻る。タイトルは A=対戦、Y=トレーニング、X=2人対戦。
  */
 (function(){
   if(!navigator.getGamepads)return;
   var DEAD=0.5,prev={},held={},seen=false,sent=[null,null];
   var ATK={2:'z',3:'x',0:'c',4:'a',5:'s',6:'d',7:'f'},ZERO={l:0,r:0,u:0,d:0,g:0};
+  var CHG={3:'hx',4:'ha'},chg=[{},{}];
   function key(type,k){try{window.dispatchEvent(new KeyboardEvent(type,{key:k,bubbles:true,cancelable:true}))}catch(e){}}
   function hold(id,k,on){if(on&&!held[id]){held[id]=k;key('keydown',k)}else if(!on&&held[id]){key('keyup',held[id]);delete held[id]}}
   function st(){var s={mode:'',paused:false,tut:false,vs2:false,en:false,api:null};
@@ -29,7 +31,8 @@
     if(!o&&d===ZERO)return;
     sent[p]=d===ZERO?null:d;try{api.set(p,d)}catch(e){}}
   function releaseAll(s){for(var id in held)key('keyup',held[id]);held={};
-    if(s&&s.api)for(var p=0;p<2;p++)if(sent[p]){sent[p]=null;try{s.api.set(p,ZERO)}catch(e){}}}
+    if(s&&s.api)for(var p=0;p<2;p++){if(sent[p]){sent[p]=null;try{s.api.set(p,ZERO)}catch(e){}}
+      if(chg[p].hx||chg[p].ha){chg[p]={};try{s.api.set(p,{hx:0,ha:0})}catch(e){}}}}
   function tick(){requestAnimationFrame(tick);
     var ps=pads(),s=st();
     if(!ps.length){if(seen){releaseAll(s);prev={}}return}
@@ -43,7 +46,12 @@
         var who=[null,null];
         for(i=0;i<ps.length;i++){var p=s.vs2&&i>=1?1:0,g=read(ps[i]);who[p]=merge(who[p],g)}
         for(var q=0;q<2;q++){setDir(s.api,q,who[q]);
-          if(who[q])for(var n in ATK){var was=prev['b'+n];if(edge('p'+q+'b'+n,!!who[q].b[n])&&!was&&s.mode=='play')try{s.api.act(q,ATK[n])}catch(e){}}}
+          for(var n in ATK){var dn=!!(who[q]&&who[q].b[n]),was=prev['b'+n],c=CHG[n];
+            if(who[q]&&edge('p'+q+'b'+n,dn)&&!was&&s.mode=='play'){
+              /* 溜められる技（強・必殺技1）は「押している」ことも渡す。離したら戻す */
+              if(c){chg[q][c]=1;try{var o={};o[c]=1;s.api.set(q,o)}catch(e){}}
+              try{s.api.act(q,ATK[n])}catch(e){}}
+            if(c&&!dn&&chg[q][c]){chg[q][c]=0;try{var o2={};o2[c]=0;s.api.set(q,o2)}catch(e){}}}}
       }else{
         /* 古い本体向け: キーボード入力に変換 */
         hold('l','ArrowLeft',all.l);hold('r','ArrowRight',all.r);hold('u','ArrowUp',all.u);hold('d','ArrowDown',all.d);hold('g','v',!!all.b[1]);

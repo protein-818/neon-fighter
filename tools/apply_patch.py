@@ -15,7 +15,7 @@ import re
 import sys
 
 SITE = 'https://protein-818.github.io/neon-fighter/'
-DESC = 'インストール不要。ブラウザで今すぐ遊べる2D格闘ゲーム。部位破壊・構え切替・10人のキャラクター。'
+DESC = 'インストール不要。ブラウザで今すぐ遊べる2D格闘ゲーム。部位破壊・2人対戦・11人のキャラクター。'
 HEAD = f'''<title>NEON FIGHTER</title>
 <meta name="description" content="{DESC}">
 <meta property="og:title" content="NEON FIGHTER">
