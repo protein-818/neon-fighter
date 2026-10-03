@@ -11,6 +11,7 @@
 ことだけを確かめる。二重に入ると計測が2回飛ぶため。
 目印の文字列が見つからない（ゲーム側が変わった）場合はエラーで止まる。
 """
+import re
 import sys
 
 SITE = 'https://protein-818.github.io/neon-fighter/'
@@ -29,7 +30,6 @@ EDITS = [
     ('<title>NEON FIGHTER</title>', HEAD),
     ("<script>\nconst cv=document.getElementById('c')",
      "<script src=\"analytics.js\"></script>\n<script>\nconst cv=document.getElementById('c')"),
-    ('</script></body></html>', '</script>\n<script src="site.js"></script>\n<script src="gamepad.js"></script></body></html>'),
 ]
 
 def main():
@@ -51,6 +51,11 @@ def main():
         if n != 1:
             sys.exit(f'目印が {n} 個見つかりました（1個のはず）: {old[:50]}...')
         s = s.replace(old, new)
+    # 外付け部品の読み込みを、末尾の </body> の直前に足す（</script> と </body> の間の改行の有無は問わない）
+    m = re.search(r'</script>\s*</body>\s*</html>\s*$', s)
+    if not m or s.count('</body>') != 1:
+        sys.exit('ファイル末尾が </script></body></html> の形になっていません')
+    s = s[:m.start()] + '</script>\n<script src="site.js"></script>\n<script src="gamepad.js"></script></body></html>\n'
     open(out, 'w', encoding='utf-8').write(s)
     print(f'{out} を書き出しました（{len(s.encode())} bytes）')
 
