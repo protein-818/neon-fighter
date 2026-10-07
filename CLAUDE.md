@@ -17,6 +17,7 @@
 | `tools/build.py` | `src/` から `index.html` を作る | 公開側（まとめ方の部分は開発側） |
 | `tools/apply_patch.py` | 公開用の変換（説明文と外付け部品の読み込みを足す） | 公開側 |
 | `tools/check_site.py` | 公開前の確認（ヘッドレスブラウザ） | 公開側 |
+| `tools/verify.py`、`tools/verify/` | 確かめる道具と基準（Version 64）。`tools/verify/README.md` | 開発側 |
 | `docs/` | 仕様書 `01`・`02` と開発の記録（段階4 で移す） | 開発側 |
 | ルート直下 | 公開物。`index.html`、`analytics.js`、`gamepad.js`、`site.js`、`privacy.html`、`og.png`、`favicon.svg` | 公開側 |
 
@@ -44,13 +45,16 @@
 python3 tools/build.py            # src/ → index.html
 python3 tools/build.py --check    # 作り直さず、いまの index.html と同じかだけ見る
 python3 tools/check_site.py       # 公開前の確認（すべて PASS で終了コード 0）
+python3 tools/verify.py           # src/ をまとめて基準と比べる（取り決め・バイト一致・総当たり330試合・画面66枚・通し試合。約5分）
+python3 tools/verify.py --quick   # 通し試合を省く（約1分半）
 ```
 
+- `tools/verify.py` の基準は `tools/verify/baseline/`（Version 64）。引っ越しの間は記録し直さない（`--record` を使わない）。
+- 道具の準備は `cd tools/verify && npm install`。数値を触ったときの総当たりは `node tools/verify/rr.js <まとめたもの> 4 6 4`（資料_開発_02）。
 - 本体を変えていないのに `--check` が「違いあり」と言ったら、どこかで意図しない変更が入っている。
 - `tools/apply_patch.py` は、目印の文字列（`<title>`、本体 script の先頭、ファイル末尾）が見つからないと止まる。止まったら本体側の形が変わっているので、取り決めを確かめる。
 
 ## まだ決まっていないこと（段階2・3 で開発側が足す）
 
 - 分けた後のファイルの一覧と、つなげる順番（`src/order.txt`）、HTML の枠（`src/shell.html`）。`tools/build.py` の `bundle()` だけを差し替える。
-- 総当たりと画面比較の道具、基準の置き場、1つのコマンドで回す方法。
 - 版の番号の上げ方（65 から。`src/VERSION` を使うかどうかも含む）。

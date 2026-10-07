@@ -12,6 +12,7 @@
 | `tools/build.py` | `src/` のソースから公開用の `index.html` を作る |
 | `tools/apply_patch.py` | 公開用の変換（`build.py` から呼ばれる） |
 | `tools/check_site.py` | 公開前の確認（ヘッドレスブラウザ） |
+| `tools/verify.py`、`tools/verify/` | 確かめる道具（開発側）。`src/` をまとめたものを基準（Version 64）と比べる |
 | `docs/` | 仕様書と開発の記録（引っ越しの段階4 で移す） |
 | `CLAUDE.md` | Claude Code が毎回読む決まり |
 | `index.html` | 公開されるゲーム本体。**`src/` から作る。直接編集しない** |

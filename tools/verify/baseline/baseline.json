@@ -1,0 +1,14 @@
+{
+  "version": "64",
+  "source_sha256": "35403b0ee373a4d9e682e9198f9d7f23a7b918a9a311e3d98bf07ce69b11f6b3",
+  "source_bytes": 261342,
+  "seed_matches": 330,
+  "seed_fingerprint": "d1102e7afc8c0a95",
+  "shots": 66,
+  "env": {
+    "chromium": "141.0.7390.37",
+    "playwright": "1.56.1",
+    "node": "v22.22.0"
+  },
+  "recorded": "2026-10-07"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "nf-verify",
+  "private": true,
+  "description": "NEON FIGHTER の確かめる道具（資料_開発_02）。npm install で acorn と playwright が入る",
+  "devDependencies": {
+    "acorn": "^8.15.0",
+    "playwright": "1.56.1"
+  }
+}
