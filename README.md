@@ -8,11 +8,13 @@
 
 | 場所 | 役割 |
 |---|---|
-| `src/` | ゲーム本体のソース（正本）。いまは `src/neon-fighter.html` の1ファイル。`src/VERSION` が版の番号 |
+| `src/` | ゲーム本体のソース（正本）。script は `src/js/` に分かれていて、`src/order.txt` の順につなげ、`src/shell.html` にはめる。`src/VERSION` が版の番号 |
 | `tools/build.py` | `src/` のソースから公開用の `index.html` を作る |
 | `tools/apply_patch.py` | 公開用の変換（`build.py` から呼ばれる） |
 | `tools/check_site.py` | 公開前の確認（ヘッドレスブラウザ） |
-| `docs/` | 仕様書と開発の記録（引っ越しの段階4 で移す） |
+| `tools/make_itch_zip.py` | itch.io に上げる zip を作る |
+| `tools/verify/` | 本体が変わっていないことを確かめる道具（`run.sh`）と、Version 64 の基準（`base/`）。開発側の持ち物 |
+| `docs/` | 仕様書と開発の記録（引っ越しの段階4 で移す）、引っ越しの文書（`docs/引っ越し/`）、開発側の連絡ノート（`docs/連絡/`） |
 | `CLAUDE.md` | Claude Code が毎回読む決まり |
 | `index.html` | 公開されるゲーム本体。**`src/` から作る。直接編集しない** |
 | `analytics.js` | 計測（プレイ人数・プレイ時間・再訪・キャラ使用率） |
@@ -23,7 +25,7 @@
 
 ## 手元で動かす
 
-`index.html` をブラウザで開くだけで動きます。`src/neon-fighter.html` も単体で開けます（外付け部品なしの素の本体）。
+`index.html` をブラウザで開くだけで動きます。外付け部品なしの素の本体を見たいときは、`tools/build.py` の `bundle()` でまとめたものを開きます（Version 64 のものは `tools/verify/base/neon-fighter.v64.html` にあります）。
 
 ## 公開
 
@@ -47,9 +49,7 @@ URLの末尾に `?nfa_debug=1` を付けると、送信内容がブラウザの�
 
 ## ゲームを更新する
 
-> 下書き（引っ越しの段階1 時点）。段階3 で本体を複数のファイルに分けたら、ソースの場所の説明を直す。
-
-ゲーム本体の正本は `src/` にあります。Claude のアーティファクトからの取り出しは行いません。
+ゲーム本体の正本は `src/` にあります（`src/js/` の22個のファイル、つなげる順番の `src/order.txt`、HTML の枠の `src/shell.html`）。Claude のアーティファクトからの取り出しは行いません。ソースの中身と決まりは `CLAUDE.md` に書いてあります。
 
 1. `main` とは別のブランチで `src/` を直す（開発側）。版を上げるときは `src/VERSION` も直す。
 2. 公開物を作る。
@@ -58,15 +58,22 @@ URLの末尾に `?nfa_debug=1` を付けると、送信内容がブラウザの�
    python3 tools/build.py
    ```
 
-3. 公開前の確認を通す。
+3. 本体が意図どおりかを確かめる（開発側。約8分。使い方は `CLAUDE.md`）。
+
+   ```
+   sh tools/verify/run.sh
+   ```
+
+4. 公開前の確認を通す（公開側）。
 
    ```
    python3 tools/check_site.py
    ```
 
-4. 確認が通ったら `main` に入れる。数分で公開ページに出る。
+5. 確認が通ったら `main` に入れる。数分で公開ページに出る。
+6. itch.io にも載せている場合は、zip を作り直して上げ直す（下の「itch.io 用の zip」）。
 
-流れは「`src/` → まとめる → 公開用の変換（`apply_patch.py`）→ `index.html`」です。`index.html` は直接編集しません（次に作り直すと上書きされるため）。
+流れは「`src/js/*.js`（`order.txt` の順）→ `shell.html` にはめる → 公開用の変換（`apply_patch.py`）→ `index.html`」です。`index.html` は直接編集しません（次に作り直すと上書きされるため）。
 
 `python3 tools/build.py --check` は、作り直さずに「`src/` から作ったものが、いまの `index.html` と1文字も違わないか」だけを確かめます。ソースを分ける作業のように、結果が変わらないはずの変更の確認に使います。
 
@@ -89,6 +96,14 @@ URLの末尾に `?nfa_debug=1` を付けると、送信内容がブラウザの�
 `python3 tools/check_site.py` が、ヘッドレスブラウザで、キーボードのみ・コントローラー1台（溜めを含む）・コントローラー2台（2人対戦）・英語表示・スマホ表示を通し、計測が1回ずつ出ることとエラーが無いことを確かめます。すべて PASS になってから `main` に入れます。
 
 Python の `playwright` と Chromium が要ります（`pip install playwright` のあと `playwright install chromium`）。
+
+## itch.io 用の zip
+
+```
+python3 tools/make_itch_zip.py
+```
+
+`neon-fighter-itch.zip` ができます。中身は `index.html`、`analytics.js`、`site.js`、`gamepad.js`、`privacy.html`、`favicon.svg` の6つで、公開ページと同じものです。`index.html` が `src/` から作ったものと違うときは止まります。zip はリポジトリには入れません。掲載文・カバー画像・スクリーンショットは、見た目や人数が変わったときに公開側が作り直します。
 
 ## 感想フォームを付ける
 

@@ -20,6 +20,7 @@
 | `tools/build.py` | `src/` から `index.html` を作る | 公開側（まとめ方の `bundle()` は開発側） |
 | `tools/apply_patch.py` | 公開用の変換（説明文と外付け部品の読み込みを足す） | 公開側 |
 | `tools/check_site.py` | 公開前の確認（ヘッドレスブラウザ） | 公開側 |
+| `tools/make_itch_zip.py` | itch.io に上げる zip を作る | 公開側 |
 | `tools/verify/` | 確かめる道具（`run.sh` ほか）と基準（`base/`） | 開発側 |
 | `docs/` | 仕様書 `01`・`02` と開発の記録（段階4 で移す）、引っ越しの文書、連絡ノート（`docs/連絡/`） | 開発側 |
 | ルート直下 | 公開物。`index.html`、`analytics.js`、`gamepad.js`、`site.js`、`privacy.html`、`og.png`、`favicon.svg` | 公開側 |
