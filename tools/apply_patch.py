@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Claude上のゲーム（HTML 1ファイル）を公開用 index.html に変換する。
+"""ゲーム本体（HTML 1ファイル）を公開用 index.html に変換する。
 
-使い方: python3 tools/apply_patch.py <Claudeから取り出したHTML> [出力先=index.html]
+ふだんは tools/build.py から呼ばれる（src/ のソース → まとめる → この変換 → index.html）。
+単体でも使える: python3 tools/apply_patch.py <ゲーム本体のHTML> [出力先=index.html]
+（Claude のアーティファクトから取り出した HTML をそのまま渡してもよい。外側の枠は自動で外す）
 
 ゲームの挙動は変えず、公開に必要な差分だけを入れる:
   1. <head> に説明文・共有用メタ情報・アイコン
@@ -32,10 +34,8 @@ EDITS = [
      "<script src=\"analytics.js\"></script>\n<script>\nconst cv=document.getElementById('c')"),
 ]
 
-def main():
-    src = sys.argv[1]
-    out = sys.argv[2] if len(sys.argv) > 2 else 'index.html'
-    raw = open(src, encoding='utf-8').read()
+def patch(raw):
+    """ゲーム本体の HTML（文字列）を受け取り、公開用の HTML（文字列）を返す。"""
     # Claudeの公開ページは外側にもう1枚HTMLの枠が付くので、内側のゲーム本体だけ取り出す
     i = raw.find('<!DOCTYPE html>')
     if i < 0:
@@ -55,8 +55,15 @@ def main():
     m = re.search(r'</script>\s*</body>\s*</html>\s*$', s)
     if not m or s.count('</body>') != 1:
         sys.exit('ファイル末尾が </script></body></html> の形になっていません')
-    s = s[:m.start()] + '</script>\n<script src="site.js"></script>\n<script src="gamepad.js"></script></body></html>\n'
-    open(out, 'w', encoding='utf-8').write(s)
+    return s[:m.start()] + '</script>\n<script src="site.js"></script>\n<script src="gamepad.js"></script></body></html>\n'
+
+def main():
+    if len(sys.argv) < 2:
+        sys.exit(__doc__)
+    src = sys.argv[1]
+    out = sys.argv[2] if len(sys.argv) > 2 else 'index.html'
+    s = patch(open(src, encoding='utf-8', newline='').read())
+    open(out, 'w', encoding='utf-8', newline='').write(s)
     print(f'{out} を書き出しました（{len(s.encode())} bytes）')
 
 if __name__ == '__main__':
