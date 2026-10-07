@@ -39,7 +39,9 @@ cd tools/verify && npm ci && npx playwright install chromium
 sh tools/verify/run.sh
 ```
 
-中でやっていること: `build.py --check` → `build.py` の `bundle()` で `src/` をまとめる → `verify.sh <基準> <まとめたもの>`（取り決めとバイト一致 / 330試合 / 画面66枚 / 通し試合）。
+中でやっていること: `build.py --check` → `build.py` の `bundle()` で `src/` をまとめる → `verify.sh <基準> <まとめたもの>`（取り決めとバイト一致 / 330試合 / 画面66枚 / 通し試合）→ `save.js`（保存データの引き継ぎ）→ `map.js`（読み込み時の順番。「！」が出たら失敗）。
+
+段階3 で本体を `src/js/` に分けたので、`src/neon-fighter.html` はもう無い。分ける前の本体はここの `neon-fighter.v64.html` だけ。
 
 道具を1本ずつ使うとき（`tools/verify/` で）:
 
@@ -48,6 +50,7 @@ node check.js <本体> [基準]           # 取り決めとファイルの形。
 node seed.js <基準> <本体>            # 330試合を1試合ずつ比べる
 node shots.js <本体> <フォルダ>       # 画面66枚。node pixcmp.js <フォルダA> <フォルダB> [違いの出力先] で比べる
 node smoke.js <本体>                  # 通し試合（約5分）
+node save.js <基準> [本体]            # 保存データの引き継ぎ（遊んだあとの保存データを入れて開き、読み込めるか）
 node map.js <本体> [--load]           # ソースの地図（分け方を考えるとき）
 node rr.js <本体> [繰り返し] [並列] [難易度] [m]   # 勝率を測る総当たり（乱数は固定しない）
 ```
