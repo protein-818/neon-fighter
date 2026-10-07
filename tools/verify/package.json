@@ -1,0 +1,11 @@
+{
+  "name": "nf-verify",
+  "private": true,
+  "description": "NEON FIGHTER の確かめる道具（分割の前後が同じかを見る）。使い方は base/README.md",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "acorn": "8.19.0",
+    "playwright": "1.63.0"
+  }
+}
