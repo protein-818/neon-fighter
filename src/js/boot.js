@@ -1,0 +1,3 @@
+let LT=0,AC2=0;function loop(t){t=t||0;bgmTick();AC2+=Math.min(50,t-LT)*(mode=='ko'?(kt>24?.35:.6):1);LT=t;while(AC2>=16.67){if(!paused&&(mode=='play'||mode=='ko'||mode=='intro'))update();else if(mode=='title'||mode=='menu')p2w(selTick);AC2-=16.67}TT=t/16.67;IA=(paused||!(mode=='play'||mode=='ko'||mode=='intro'))?1:Math.min(1,AC2/16.67);draw();requestAnimationFrame(loop)}
+['touchstart','touchend','pointerdown','pointerup','mousedown','click','keydown'].forEach(t=>addEventListener(t,unlockAudio,{passive:true,capture:true}));document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AC&&AC.state!='running')AC.resume().catch(()=>{})});
+A=mk(200,false,0);B=mk(480,true,1);applyLang();loop();

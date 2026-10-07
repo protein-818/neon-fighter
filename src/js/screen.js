@@ -1,0 +1,1 @@
+const cv=document.getElementById('c'),g=cv.getContext('2d'),W=680,GY=400,touch=!!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);let H=touch?500:640;if(touch){cv.height=H;cv.style.aspectRatio='680/'+H}

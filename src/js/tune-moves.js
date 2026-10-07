@@ -1,0 +1,5 @@
+const SLW=x=>Math.round(x*1.15);for(const c of CH){for(const k in c.M){const m=c.M[k];m.ac=m.ac||1;m.g=m.g||1;if(m.rg>0)m.rg+=10;m.su=SLW(m.su);if(m.ac>1)m.ac=SLW(m.ac);m.rc=SLW(m.rc||0);if(m.iv)m.iv=Math.round(m.iv*1.12);if(m.hs)m.hs=Math.round(m.hs*1.12)}}for(const c of CH){const MA={};for(const k in c.M)if(!k.includes('@'))MA[k]=c.M[k+'@']||c.M[k];c.MA=MA}
+/* v39 斬撃: cut=部位への蓄積倍率。刀(カグラ抜刀)・光刃(イヴ)=CUT_S、カード斬り(ジョーカー)=CUT_J、投げたカード=その半分の上乗せ */
+const CUT_S=2.6,CUT_J=1.4,CUTP=['SLASH','XSLASH','S','CHOOK','U','DBL'];for(const c of CH)for(const k in c.M){const m=c.M[k];if(m.noh||m.kind=='stance'||m.kind=='tr')continue;if((c.n=='カグラ'&&k.includes('@'))||m.blade)m.cut=CUT_S;else if(c.n=='ジョーカー'&&CUTP.includes(m.ps))m.cut=CUT_J;else if(c.n=='ジョーカー'&&m.vis=='card')m.cut=1+(CUT_J-1)/2}
+/* v40 打撃: 当てたダメージ×blunt だけ相手のゲージを減らす(1本=4)。素手・蹴りの近接技が対象。斬撃・飛び道具・投げ・爪と牙・魔法は対象外。打撃を受けた側はゲージが増えない */
+const BL_K=.12,BLC={'ブレイズ':1.2,'ボルト':.5,'タイタン':1.5,'ゲイル':.5,'ルリ':1};for(const c of CH)if(BLC[c.n])for(const k in c.M){const m=c.M[k];if(m.kind||m.grab||m.noh||m.cut||!(m.rg>0))continue;m.blunt=BL_K*(BLC[c.n]||1)}

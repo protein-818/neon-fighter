@@ -1,0 +1,48 @@
+# まとめる順番。上から順に js/ のファイルをつなげて1つの script にし、shell.html の /*@NF_SCRIPT@*/ の行と置き換える。
+# 順番を変えると動きが変わる（読み込み時に走る文があるため）。並べ替えるときは sh tools/verify/run.sh で確かめる。
+# 空の行と # で始まる行は読まない。
+
+# 画面の基本（cv g W GY touch H）（もとの 36 行）
+js/screen.js
+# キャラのデータ11人と技の種類の表（CH、CN SP LEG）（もとの 37〜133 行）
+js/data-chars.js
+# 読み込み時の数値の書き換え（×1.15、cut、blunt）。順番を変えない（もとの 134〜138 行）
+js/tune-moves.js
+# 英語対応（LANG EN TR applyLang setLang）（もとの 139〜149 行）
+js/lang.js
+# 共通の定数とキャラ固有の仕組み（溜め、ギア、ヒート、空中ダッシュ、凍え、EV、LV）（もとの 150〜174 行）
+js/consts.js
+# 状態の変数と、保存データの読み込み（もとの 175〜180 行）
+js/state.js
+# 音（効果音、BGM、音の設定）（もとの 181〜277 行）
+js/sound.js
+# 試合の土台（mk start resetRound ko hitRes atk 投げ）（もとの 278〜310 行）
+js/flow.js
+# 部位の負傷（もとの 311〜317 行）
+js/wounds.js
+# 因縁（相手ごとの戦績、入場の台詞）（もとの 318〜345 行）
+js/rival.js
+# ダッシュ、部位破壊、つかみ（もとの 346〜381 行）
+js/limbs.js
+# CPU の戦い方の型（PD PERS styleAI）（もとの 382〜402 行）
+js/ai-style.js
+# 場外、時間切れ、ポーズ（もとの 403〜412 行）
+js/ring.js
+# トレーニングと操作ガイド（もとの 413〜453 行）
+js/training.js
+# 飛び道具、CPU、1フレームの進行（spawn ai step update）（もとの 454〜518 行）
+js/step.js
+# ステージの背景、飛び道具と演出の描画（もとの 519〜566 行）
+js/draw-fx.js
+# 姿勢（STN pose）（もとの 567〜683 行）
+js/pose.js
+# 見た目と体の描画（LOOK figure）。途中にキャラ別の CPU がある（もとの 684〜1006 行）
+js/draw-figure.js
+# 画面の部品、HUD、メニュー、結果、タイトル（もとの 1007〜1100 行）
+js/screens.js
+# 全体の描画と入力の入口（draw act NF_INPUT）、2人対戦のキー（もとの 1101〜1130 行）
+js/draw.js
+# 入力の受け口（window の keydown/keyup など）とタッチ用の部品（もとの 1131〜1147 行）
+js/listeners.js
+# ループと起動。必ず最後（もとの 1148〜1150 行）
+js/boot.js

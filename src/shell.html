@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NEON FIGHTER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0b0c10}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:var(--bg);overflow:hidden;touch-action:none}
+body{display:flex;align-items:center;justify-content:center}
+canvas{max-height:100%;max-width:100%;aspect-ratio:34/32;background:#0f1116;box-shadow:0 12px 40px rgba(0,0,0,.6);border-radius:12px}
+
+#ui{display:none;position:fixed;inset:0;pointer-events:none;z-index:5;--u:clamp(44px,14vh,72px);user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+@media (orientation:portrait){#ui{--u:clamp(44px,15vw,66px)}#rot{display:block!important}}
+#dp{pointer-events:auto;position:absolute;left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));width:calc(var(--u)*2.7);height:calc(var(--u)*2.7);border-radius:50%;background:rgba(18,20,27,.5);border:2px solid rgba(255,255,255,.22);touch-action:none;backdrop-filter:blur(2px)}
+#dp i{position:absolute;font-style:normal;color:rgba(255,255,255,.75);font-size:calc(var(--u)*.45);width:34%;height:34%;display:flex;align-items:center;justify-content:center;border-radius:50%}
+#dp i.on{background:rgba(255,255,255,.22);color:#fff}
+#dp [data-d=u]{left:33%;top:3%}#dp [data-d=d]{left:33%;bottom:3%}#dp [data-d=l]{left:3%;top:33%}#dp [data-d=r]{right:3%;top:33%}
+#rc{position:absolute;right:max(12px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));display:grid;grid-template-columns:calc(var(--u)*.85) calc(var(--u)*.85) var(--u) var(--u);grid-template-rows:var(--u) var(--u);gap:7px;align-items:center;justify-items:center}
+.b{pointer-events:auto;touch-action:none;font:inherit;font-family:"Noto Sans JP",system-ui,sans-serif;font-weight:700;color:#fff;background:rgba(18,20,27,.55);border:2px solid rgba(255,255,255,.25);border-radius:50%;width:100%;height:100%;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;backdrop-filter:blur(2px)}
+.b b{font-size:calc(var(--u)*.28)}.b small{font-size:9px;opacity:.9;text-align:center;max-width:90%;word-break:break-all}
+.b.sp{width:calc(var(--u)*.85);height:calc(var(--u)*.85)}.b.sp b{font-size:9px;letter-spacing:-1px;color:rgba(255,255,255,.25);font-weight:900;height:11px}.b.sp b .f{color:#ffc53d}.b.sp b .t{letter-spacing:0;color:#9aa3b5;font-size:8px}.b.sp.ng{opacity:.5}.b.sp b i{font-style:normal}
+.b.rdy{border-color:#ffc53d;background:rgba(90,68,16,.6)}
+.b.p{background:rgba(255,255,255,.3)}
+.b[data-k=z]{border-color:rgba(61,220,132,.7)}.b[data-k=x]{border-color:rgba(255,77,61,.75)}.b[data-k=c]{border-color:rgba(255,197,61,.7)}.b[data-k=v]{border-color:rgba(90,160,255,.75)}
+#ui.en .b small{word-break:normal;font-size:8px;line-height:1}
+#rot{display:none;position:absolute;top:6px;left:0;right:0;text-align:center;color:#ffc53d;font-size:12px;text-shadow:0 0 4px #000}
+</style></head><body>
+<canvas id="c" width="680" height="640"></canvas>
+<div id="ui"><div id="dp"><i data-d="u">▲</i><i data-d="l">◀</i><i data-d="r">▶</i><i data-d="d">▼</i></div>
+<div id="rc"><button class="b sp" data-k="a" style="grid-area:1/1"><b></b><small></small></button><button class="b sp" data-k="s" style="grid-area:1/2"><b></b><small></small></button><button class="b sp" data-k="d" style="grid-area:2/1"><b></b><small></small></button><button class="b sp" data-k="f" style="grid-area:2/2"><b></b><small></small></button>
+<button class="b" data-k="v" style="grid-area:1/3"><b>ガード</b></button><button class="b" data-k="x" style="grid-area:1/4"><b>強</b></button><button class="b" data-k="c" style="grid-area:2/3"><b>投げ</b></button><button class="b" data-k="z" style="grid-area:2/4"><b>弱</b></button></div>
+<div id="rot">📱 横向きでプレイすると操作しやすいです</div></div>
+
+<script>
+/*@NF_SCRIPT@*/
+</script>
+</body></html>

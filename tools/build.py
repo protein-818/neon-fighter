@@ -27,15 +27,41 @@ def read(path):
         return f.read()
 
 
+MARK = '/*@NF_SCRIPT@*/\n'
+
+
 def bundle():
     """src/ のソースを、ゲーム本体の HTML 1枚（文字列）にまとめる。
 
-    いま（段階1）は本体が1ファイルなので、そのまま読むだけ。
-    段階3 でファイルを分けたら、この関数だけを
-    「src/order.txt の順につなげて1つの script にし、src/shell.html にはめる」
-    に差し替える。script は1つ、ファイル末尾の形は変えない（公開側との取り決め）。
+    src/order.txt に書いた順に src/js/ のファイルをそのままつなげて1つの script にし、
+    src/shell.html の目印の行（MARK）と置き換える。足したり整えたりはしない。
+    script は1つ、ファイル末尾の形は変えない（公開側との取り決め）。
+    ES モジュールやバンドラーは使わない（名前が閉じ込められて外付け部品から読めなくなる）。
     """
-    return read(os.path.join(SRC, 'neon-fighter.html'))
+    names = []
+    for line in read(os.path.join(SRC, 'order.txt')).split('\n'):
+        line = line.strip()
+        if line and not line.startswith('#'):
+            names.append(line)
+    if len(set(names)) != len(names):
+        sys.exit('order.txt に同じファイルが2回あります')
+    js_dir = os.path.join(SRC, 'js')
+    left = sorted(set('js/' + n for n in os.listdir(js_dir) if n.endswith('.js')) - set(names))
+    if left:
+        sys.exit('order.txt に書かれていないファイルがあります: ' + ', '.join(left))
+    parts = []
+    for n in names:
+        path = os.path.join(SRC, n)
+        if not os.path.exists(path):
+            sys.exit('order.txt のファイルがありません: ' + n)
+        s = read(path)
+        if not s.endswith('\n') or '\r' in s:
+            sys.exit(n + ': 改行は LF にし、最後の行も改行で終える')
+        parts.append(s)
+    shell = read(os.path.join(SRC, 'shell.html'))
+    if shell.count(MARK) != 1:
+        sys.exit('shell.html に目印 ' + MARK.strip() + ' の行がちょうど1つ必要です')
+    return shell.replace(MARK, ''.join(parts))
 
 
 def version():
